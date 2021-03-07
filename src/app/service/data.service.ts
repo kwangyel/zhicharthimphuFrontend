@@ -121,6 +121,13 @@ export class DataService {
       );
   }
 
+  postRemarks(item){
+    return this.http.post<any>(`${this.API_URL}/api/set-remarks`,item,this.httpOptions)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
+
   postUpdateHouseHold(item, houseHoldId) {
     return this.http
       .put(`${this.API_URL}/household-details/${houseHoldId}`, item, this.httpOptions)
@@ -176,14 +183,14 @@ export class DataService {
 
   postCompletion(buildingId) {
     return this.http
-      .get(`${this.API_URL}/markComplete/${buildingId}`,  this.httpOptions)
+      .get<any>(`${this.API_URL}/markComplete/${buildingId}`,  this.httpOptions)
       .pipe(
         catchError(this.handleError)
       );
   }
   postProgress(bid){
     return this.http
-      .get(`${this.API_URL}/markProgress/${bid}`,  this.httpOptions)
+      .get<any>(`${this.API_URL}/markProgress/${bid}`,  this.httpOptions)
       .pipe(
         catchError(this.handleError)
       );

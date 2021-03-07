@@ -23,6 +23,7 @@ import {
   MatDialogModule,
   MatCheckboxModule,
   MatSnackBarModule} from '@angular/material';
+import { MatRadioModule } from '@angular/material/radio';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpInterceptorService } from './service/http-interceptor.service';
@@ -61,6 +62,7 @@ import { AdminComponent } from './admin/admin.component';
     BrowserAnimationsModule,
     MatButtonModule,
     MatFormFieldModule,
+    MatRadioModule,
     MatInputModule,
     MatSelectModule,
     MatToolbarModule,

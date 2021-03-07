@@ -30,11 +30,11 @@
     </div>
   </div>
   <div class = "scroll" style="margin: 0;">
-    <h3 style="text-align: center;">National Covid Cases Summary |After December 20,2020</h3>
+    <!-- <h3 style="text-align: center;">National Covid Cases Summary |After December 20,2020</h3> -->
    <div  class= "nationCase" style="display: flex; flex-direction: row; align-items: center; justify-content: center; margin: 0;">
     <div  class= "fg" style="padding-left: 10px; display: flex; flex-direction: row;">
 
-      <div style="display: flex; flex-direction: column;">
+      <!-- <div style="display: flex; flex-direction: column;">
         <div style="display: flex; flex-direction: row; padding: 0;" >
             <img src="../../assets/bhutan.png" alt="" width="100px" height="auto">       
           <mat-card style="align-items: center; justify-content: center;padding-bottom: 0;">
@@ -62,14 +62,14 @@
            </mat-card>
            <h3 class="lol">Thimphu</h3>
         </div>
-      </div>
+      </div> -->
       </div>
       
    </div>
     <div>
      
-      <canvas id="myChart" width="620px " height="320px"></canvas>
-      <canvas id="casesByDzongkhag" width="620px " height="330px"></canvas>
+      <!-- <canvas id="myChart" width="620px " height="320px"></canvas>
+      <canvas id="casesByDzongkhag" width="620px " height="330px"></canvas> -->
     </div>
     <br>
     <br>
@@ -122,6 +122,27 @@
     <div *ngIf="buildingInfo">
       <h3>Details</h3>
       <h3>Building Details</h3>    
+
+      <h3>Set Status</h3>
+      <mat-radio-group aria-label="Select an option" [(ngModel)]="status">
+        <mat-radio-button [value]="1">Incomplete</mat-radio-button>
+        <mat-radio-button [value]="2">Progress </mat-radio-button>
+        <mat-radio-button [value]="3">Complete</mat-radio-button>
+      </mat-radio-group>
+
+      <br>
+      <br>
+      <mat-form-field style="width: 90%;">
+        <input matInput type="text" placeholder="Remarks" name="search" [(ngModel)]="status_remarks" >
+      </mat-form-field>
+
+      <br>
+      <br>
+      <button mat-flat-button color="accent" (click)= "setStatus(status,status_remarks)" style="width:50%;">Set Building Status</button>
+      <br>
+      <br>
+      <br>
+
       <table style = "width:100%;">
         <tr>
           <th>Building ID</th>

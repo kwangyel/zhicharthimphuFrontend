@@ -10,6 +10,9 @@
     margin-right: 16px;
     font-size: 17px;
   }
+  .mat-radio-button ~ .mat-radio-button {
+    margin-left: 16px;
+  }
   
   .scroll{
     height: 90vh; 

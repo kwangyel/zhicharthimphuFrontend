@@ -80,6 +80,7 @@ export class AdminComponent implements OnInit {
   thimphuBuildings:number;
   thimphuCases:number;
 
+  status_remarks:any;
 
   //chart js
   API_URL =environment.API_URL;
@@ -125,7 +126,6 @@ export class AdminComponent implements OnInit {
   showCaseDetails = false;
 
   map: L.Map;
-
 
   greenMarker = L.icon({
     iconUrl: 'assets/marker-green.png',
@@ -196,7 +196,7 @@ export class AdminComponent implements OnInit {
     {id:'2', name:"Load Bearing"},
     {id:'3', name:"Composite"},
     {id:'4', name:"Others"},
-  ];
+];
   materialType: IdName[]=[
     {id:'1', name:"Brick Masonry"},
     {id:'2', name:"ACC Block"},
@@ -305,9 +305,9 @@ export class AdminComponent implements OnInit {
     Chart.plugins.unregister(ChartDataLabels);
     this.getDzongkhagList();
     this.reactiveForm();
-    this.renderChart();
-    this.casesByDzongkhag();
-    this.caseOverview();
+    // this.renderChart();
+    // this.casesByDzongkhag();
+    // this.caseOverview();
 
     const zoneId = sessionStorage.getItem('zoneId');
     const subZoneId = sessionStorage.getItem('subZoneId');
@@ -329,6 +329,48 @@ export class AdminComponent implements OnInit {
             this.thimphuBuildings = data.thimphuBuildings;
             this.thimphuCases = data.thimphuCases;
           })
+  }
+
+  setAlert(){
+    this.snackBar.open('Set Success', '', {
+      verticalPosition: 'top',
+      duration: 3000
+    });
+  }
+  setStatus(e,r){
+    let buildingStatus ="" 
+    let remarks = ""
+    if(e === 1){
+      buildingStatus = "INCOMPLETE"
+    }
+    if(e === 2){
+      buildingStatus = "PROGRESS"
+      this.dataService.postProgress(this.buildingId).subscribe(res=>{
+        if(res.success === "true"){
+          this.setAlert()
+        }
+        console.log(res)}) 
+    }
+    if(e === 3){
+      buildingStatus = "COMPELTE"
+      this.dataService.postCompletion(this.buildingId).subscribe(res=>{
+        if(res.success === "true"){
+          this.setAlert()
+        }
+        console.log(res)}) 
+    }
+    if(r != undefined){
+      let obj ={
+        "bid": this.buildingId,
+        "remarks":r
+      }
+      this.dataService.postRemarks(obj).subscribe(res=>{
+        if(res.success === "true"){
+          this.setAlert()
+        }
+        console.log(res)
+      })
+    }
   }
 
   renderChart(){
@@ -832,6 +874,9 @@ export class AdminComponent implements OnInit {
                 this.http.get(`${this.API_URL}/get-img/${this.buildingId}`).subscribe((json: any) => {
                   this.imgs= json.data;
                 });
+                if(feature.properties.remarks !== ""){
+                  this.status_remarks = feature.properties.remarks
+                }
               });
             }, pointToLayer: (feature, latLng) => {
               if(feature.properties.status == 'INCOMPLETE'){
