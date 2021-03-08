@@ -80,6 +80,7 @@ export class AdminComponent implements OnInit {
   thimphuBuildings:number;
   thimphuCases:number;
 
+  status: any;
   status_remarks:any;
 
   //chart js
