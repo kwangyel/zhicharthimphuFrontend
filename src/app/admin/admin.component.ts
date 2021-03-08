@@ -332,6 +332,50 @@ export class AdminComponent implements OnInit {
           })
   }
 
+  resetBuilding(){
+        if(this.buildingGeojson !== undefined){
+          this.map.removeLayer(this.buildingGeojson)
+          this.buildingGeojson = undefined 
+        }
+        var zz = this.zoneForm.get('subZoneControl').value;
+        this.http.get(`${this.API_URL}/get-str/${zz}`).subscribe((json: any) => {
+          this.buildingGeojson = L.geoJSON(json, {
+                   onEachFeature: (feature, layer) => {
+              layer.on('click', (e) => {
+                this.buildingId = feature.properties.structure_id;
+                this.showBuilding(this.buildingId);
+                this.clearData = true;
+                this.resident = null;
+                this.http.get(`${this.API_URL}/getunits/${this.buildingId}`).subscribe((json: any) => {
+                  this.units = json.data;
+                });
+                this.http.get(`${this.API_URL}/get-img/${this.buildingId}`).subscribe((json: any) => {
+                  this.imgs= json.data;
+                });
+                if(feature.properties.remarks !== ""){
+                  this.status_remarks = feature.properties.remarks
+                }
+              });
+            }, pointToLayer: (feature, latLng) => {
+              if(feature.properties.status == 'INCOMPLETE'){
+                return L.marker(latLng, {icon: this.redMarker});
+              }else if(feature.properties.status == "PROGRESS"){
+                return L.marker(latLng, {icon: this.yellowMarker});
+              }else if(this.showattic){
+                for(var i = 0;i<this.residentAttic.length;i++){
+                  // if(this.residentAttic[i]['structure_id'] == this.);
+                  // if()
+                }
+                return L.marker(latLng,{icon: this.myMarker});
+              } else{
+                return L.marker(latLng, {icon: this.greenMarker});
+              }
+            }
+          });
+          this.map.addLayer(this.buildingGeojson)
+        });
+
+  }
   setAlert(){
     this.snackBar.open('Set Success', '', {
       verticalPosition: 'top',
@@ -349,6 +393,7 @@ export class AdminComponent implements OnInit {
       this.dataService.postProgress(this.buildingId).subscribe(res=>{
         if(res.success === "true"){
           this.setAlert()
+          this.resetBuilding()
         }
         console.log(res)}) 
     }
@@ -356,6 +401,7 @@ export class AdminComponent implements OnInit {
       buildingStatus = "COMPELTE"
       this.dataService.postCompletion(this.buildingId).subscribe(res=>{
         if(res.success === "true"){
+          this.resetBuilding()
           this.setAlert()
         }
         console.log(res)}) 
