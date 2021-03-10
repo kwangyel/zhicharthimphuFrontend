@@ -413,6 +413,7 @@ export class AdminComponent implements OnInit {
       }
       this.dataService.postRemarks(obj).subscribe(res=>{
         if(res.success === "true"){
+          this.resetBuilding()
           this.setAlert()
         }
         console.log(res)
