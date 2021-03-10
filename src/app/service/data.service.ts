@@ -122,7 +122,7 @@ export class DataService {
   }
 
   postRemarks(item){
-    return this.http.post<any>(`${this.API_URL}/api/set-remarks`,item,this.httpOptions)
+    return this.http.post<any>(`${this.API_URL}/set-remarks`,item,this.httpOptions)
     .pipe(
       catchError(this.handleError)
     )
